@@ -1,0 +1,13 @@
+{
+    "name": "sam-sepi/rpgchart",
+    "description": "Library to draw the RPGs outcomes",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sam Sepi",
+            "email": "sam.sepi.84@gmail.com"
+        }
+    ],
+    "require": {}
+}
