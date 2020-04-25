@@ -44,6 +44,7 @@ class Interlock extends RpgWrapper
 
         for($i = 0; $i < 50; $i++)
         {
+            $data['test'][$i] = 'Test no.: ' . $i;
             $data['roll'][$i] = rand(1, 10) + $stat + $skill;
         }
 

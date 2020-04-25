@@ -4,7 +4,7 @@ namespace Rpgchart;
 
 use Rpgchart\RpgWrapper;
 
-class Opend6
+class Opend6 extends RpgWrapper
 {
     /**
      * Undocumented function
@@ -42,6 +42,7 @@ class Opend6
 
         for($i = 0; $i < 50; $i++)
         {
+            $data['test'][$i] = 'Test no.: ' . $i;
             $data['roll'][$i] = $this->getRoll($pool) + $bonus;
         }
 

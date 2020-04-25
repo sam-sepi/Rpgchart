@@ -4,7 +4,7 @@ namespace Rpgchart;
 
 use Rpgchart\Validation;
 
-class Basicrp
+class Basicrp extends RpgWrapper
 {
     public function getData(string $skill = null): array
     {
@@ -36,6 +36,7 @@ class Basicrp
 
         for($i = 0; $i < 50; $i++)
         {
+            $data['test'][$i] = 'Test no.: ' . $i;
             $data['roll'][$i] = rand(1, 100);
         }
 
