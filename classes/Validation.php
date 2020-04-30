@@ -20,7 +20,7 @@ class Validation
 
     public function validateInterval(int $stat, int $min, int $max): bool
     {
-        if(($max < $stat) or ($stat > $min))
+        if(($stat <= $max) && ($stat >= $min))
         {
             return true;
         }

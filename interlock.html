@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Bungee+Inline&family=Cabin+Sketch&family=Fondamento&family=Fredericka+the+Great&family=IBM+Plex+Sans+Condensed:ital@1&family=IM+Fell+Double+Pica&family=Press+Start+2P&family=VT323&display=swap');
+            body, h3, h5, p
+            {
+                text-align: center;
+                padding: 0;
+                margin: 0;
+            }
+            #rpg
+            {
+                margin-top: 5px;
+                font-family: 'Cabin Sketch', cursive;
+                font-size: 6vw;
+            }
+            #rules
+            {
+                text-align: left;
+                margin: 20px;
+                padding: 10px;
+            }
+            #character
+            {
+                margin: auto;
+                width: 80vw;
+                text-align: center;
+            }
+            .click
+            {
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                font-size: 22px;
+                font-family: 'Fredericka the Great', cursive;
+            }
+            #update
+            {
+                background-color: rgb(148, 44, 36);
+                display: inline-block;
+                margin-left: 30px;
+                margin-top: 30px;
+            }
+            #show_rules
+            {
+                background-color: black;
+                display: block;
+                margin: auto;
+                margin-top: 40px;
+            }
+            #form
+            {
+                display: inline;
+            }
+            .num
+            {
+                width: 50px;
+                height: 50px;
+                border: 2px solid black;
+                border-radius: 25px;
+                font-size: 30px;
+                text-align: center;
+                display: inline;
+                margin-left: 10px;
+            }
+            .chart-container
+            {
+                width:65vw;
+                margin: auto;
+            }
+            .text
+            {
+                font-family: 'IM Fell Double Pica', serif;
+                font-size: 22px;
+            }
+            @media screen and (max-width: 1200px) 
+            {
+                #rpg
+                { 
+                    font-size: 8vw;
+                }
+                .chart-container
+                {
+                    margin-top: 20px;
+                    width: 80vw;
+                }
+            }
+            @media screen and (max-width: 600px) 
+            {
+                #rpg
+                {
+                    font-size: 10vw;
+                }
+                .chart-container
+                {
+                    margin-top: 20px;
+                    width: 98vw;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="Character">
+
+            <p id="rpg"></p>
+
+            <input type="submit" value="Rules" id="show_rules" class="click" onclick="showRules()">
+                <p id="rules" class="text"></p>
+
+            <p id="form" class="text">Stat and Skill: </p>  
+                <input type="text" id="stat" value="5" class="num">
+                <input type="text" id="skill" value="6" class="num">
+
+            <input type="submit" value="Roll" id="update" onclick="drawData()" class="click">
+        </div>
+        <br>
+
+        <h3 id="error"></h3>
+
+        <div class="chart-container">
+            <canvas id="chart"></canvas>
+        </div>
+
+        <script>
+
+        drawData();
+
+        async function drawData()
+        {
+            if(window.chartObject != undefined)
+                window.chartObject.destroy();
+            
+            document.getElementById('error').innerHTML = '';
+
+            let req = await fetch('api.php?interlock', 
+            {
+                method: "post",
+                headers: new Headers({
+                    "Content-Type": "application/json"
+                }),
+                body: JSON.stringify({
+                    fvar: document.getElementById('stat').value,
+                    svar: document.getElementById('skill').value
+                })
+            });
+
+            json_data = await req.json();
+
+            if(json_data.error)
+            {
+                document.getElementById('error').innerHTML = json_data.error;
+            }
+            else
+            {
+                document.getElementById('rpg').innerHTML = json_data.rpg;
+                document.getElementById('rules').innerHTML = json_data.rules;
+                document.getElementById('rules').style.display = 'none';
+
+                var result = [];
+
+                for(var i in json_data.roll)
+                    result.push(json_data.roll[i]);
+
+                let test = [];
+                for(var i in json_data.test)
+                    test.push(json_data.test[i]); 
+
+                var ctx = document.getElementById('chart').getContext('2d');
+
+                window.chartObject = new Chart(ctx, {
+
+                    type: 'line',
+                    data: {
+                        labels: test,
+                        datasets: [
+                        {
+                            label: 'Interlock - d10 + Stat + Skill: ',
+                            borderColor: 'rgb(255, 0, 0)',
+                            data: result,
+                            backgroundColor: 'rgba(255, 0, 0, 0)'
+                        }],
+                    },
+                    
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    suggestedMin: 0,
+                                    suggestedMax: json_data.yaxes,
+                                },
+                                gridLines: {
+                                    display: false
+                                }
+                            }],
+                            xAxes: [{
+                                gridLines: {
+                                    display: false
+                                } 
+                            }]
+                        },
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+
+            }
+        }
+
+        function showRules()
+        {
+            if(document.getElementById('rules').style.display === 'none')
+            {
+                document.getElementById('rules').style.display = 'block';
+            }
+            else
+            {
+                document.getElementById('rules').style.display = 'none';
+            }
+        }
+        </script>
+</html>
