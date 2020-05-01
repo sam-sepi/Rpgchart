@@ -23,7 +23,7 @@ class Interlock extends RpgWrapper
 
         $data['rules'] = nl2br('When making a Skill Check, first, determine which of your stats is the most appropriate to use to perform the action. 
         
-        For example, i you were trying to stand on your head, REF would be best. If you were deciphering a code INT would be most appropriate. Next, if you have any one Skill directly relating to the task at hand, add that skill to the stat. You may apply only one Skill to a task at any time. 
+        For example, if you were trying to stand on your head, REF would be best. If you were deciphering a code INT would be most appropriate. Next, if you have any one Skill directly relating to the task at hand, add that skill to the stat. You may apply only one Skill to a task at any time. 
         
         Finally, <b>roll 1D10 and add the combined total of your die roll, your Stat and your selected Skill</b>. 
         

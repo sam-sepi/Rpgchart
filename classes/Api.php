@@ -10,7 +10,7 @@ use Rpgchart\Storyteller;
 class Api
 {
     protected $rpg;
-    protected $rpgs = ['interlock', 'basicrp', 'opend6', 'storyteller'];
+    protected $rpgs = ['interlock', 'basicrp', 'opend6', 'storyteller', 'cypher'];
     public $error = FALSE;
 
     public function __construct(string $qstring = null)
@@ -33,6 +33,11 @@ class Api
 
                 case 'storyteller':
                     $this->rpg = new Storyteller;
+                break;
+
+                case 'cypher':
+                    $this->rpg = new Cypher;
+                break;
             }
         }
         else

@@ -21,7 +21,9 @@ class Storyteller extends RpgWrapper
 
         $data['rules'] = nl2br('Actions are resolved in the Storyteller System by rolling a <b>pool</b> of ten-sided dice, with the number of dice determined by one or more of a character\'s traits. 
         
-        <b>Each action has a number that each die must meet; this number is either called a difficulty (in the World of Darkness games and Street Fighter) or a target number (in the Revised Storyteller System)</b>. This number is usually 7, although some World of Darkness games instead use a baseline difficulty of 6. 
+        <b>Each action has a number that each die must meet; this number is either called a difficulty (in the World of Darkness games and Street Fighter) or a target number (in the Revised Storyteller System)</b>. 
+        
+        This number is usually 7, although some World of Darkness games instead use a baseline difficulty of 6. 
         
         Any dice that come up as this number or higher are counted as successes; in some versions, each die showing a result of 1 actually subtracts a success. The more successes, the more favourable the result.');
 
@@ -36,6 +38,7 @@ class Storyteller extends RpgWrapper
         }
 
         $pool = (int)$pool;
+        $target = (int)$target;
 
         if($this->validate->validateInterval($pool, 1, 10) == false)
         {
