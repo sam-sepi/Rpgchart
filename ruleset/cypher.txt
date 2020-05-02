@@ -1,0 +1,7 @@
+Cypher System gameplay involves a simple die roll to determines success or failure in any kind of action. <b>The GM assigns a difficulty on a scale of 1 to 10—a 1 is extremely simple, while a 10 represents a herculean task beyond the means of most mortals</b>. 
+        
+Once the GM has assigned this difficulty, the rest is up to the players. Players apply their skills and experience, tools or other advantages, aid from one another, and other assets to reduce this difficulty. 
+        
+They can also focus a limited resource called <b>Effort</b> to further lower the difficulty of actions really important to them.
+        
+Once a player has reduced the difficulty as much as they are able, they roll a d20. The target number is equal to three times the difficulty.

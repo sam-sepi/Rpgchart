@@ -1,0 +1,5 @@
+In the standard rules, traits are rated by whole and partial increments of six-sided dice. <b>A whole die increment is written as “1D”, where the integer denotes a number of dice to be rolled and totaled. Partial die increments are written as “1D+1”, where the primary identity denotes a number of dice to be rolled and totaled, and the secondary identity denotes an absolute value to be added to the sum total.</b>
+
+Conflict resolution in OpenD6 is based on a standardized difficulty scale that is adjusted for the mathematical mean of a given trait score.
+
+On this difficulty scale, a “Moderate” difficulty is defined as a number approximating the mean roll of a trait score totaling between 3D and 4D, so that the sum total of a trait roll will equal or exceed the difficulty on approximately 50% of a given set of iterations. Difficulties are then derived mathematically in multiples of 3.5, where the corresponding descriptive value is derived in multiples of 5.

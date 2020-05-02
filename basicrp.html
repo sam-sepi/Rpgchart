@@ -3,108 +3,7 @@
     <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Fredericka+the+Great&family=Playfair+Display:wght@500&display=swap');
-            body, h3, h5, p
-            {
-                text-align: center;
-                padding: 0;
-                margin: 0;
-            }
-            #rpg
-            {
-                margin-top: 5px;
-                font-family: 'Fredericka the Great', cursive;
-                font-size: 6vw;
-            }
-            #rules
-            {
-                text-align: left;
-                margin: 20px;
-                padding: 10px;
-            }
-            #character
-            {
-                margin: auto;
-                width: 80vw;
-                text-align: center;
-            }
-            .click
-            {
-                border: none;
-                color: white;
-                text-shadow: 1px 1px black;
-                padding: 15px 32px;
-                text-align: center;
-                text-decoration: none;
-                font-size: 22px;
-                font-family: 'Playfair Display', serif;
-                width: 140px;
-            }
-            #update
-            {
-                background-color:rgb(0, 70, 0);
-                display: inline-block;
-                margin-left: 30px;
-                margin-top: 30px;
-            }
-            #show_rules
-            {
-                background-color: rgba(100, 0, 0, 0.9);
-                display: block;
-                margin: auto;
-                margin-top: 40px;
-            }
-            #form
-            {
-                display: inline;
-            }
-            .num
-            {
-                width: 50px;
-                height: 50px;
-                border: 2px solid black;
-                border-radius: 25px;
-                font-size: 30px;
-                text-align: center;
-                display: inline;
-                margin-left: 10px;
-            }
-            .chart-container
-            {
-                width:65vw;
-                margin: auto;
-            }
-            .text
-            {
-                font-family: 'Playfair Display', serif;
-                font-size: 22px;
-            }
-            @media screen and (max-width: 1200px) 
-            {
-                #rpg
-                { 
-                    font-size: 8vw;
-                }
-                .chart-container
-                {
-                    margin-top: 20px;
-                    width: 80vw;
-                }
-            }
-            @media screen and (max-width: 600px) 
-            {
-                #rpg
-                {
-                    font-size: 10vw;
-                }
-                .chart-container
-                {
-                    margin-top: 20px;
-                    width: 98vw;
-                }
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="css/general.css">
     </head>
 
     <body>
@@ -115,7 +14,7 @@
             <input type="submit" value="Rules" id="show_rules" class="click" onclick="showRules()">
                 <p id="rules" class="text"></p>
             
-            <p id="form" class="text">Skill: </p><input type="text" id="stat" value="55" class="num">
+            <p id="form" class="text">Skill: </p><input type="text" id="skill" value="55" class="num">
                 <input type="submit" value="Roll" id="update" onclick="drawData()" class="click">
         </div>
         <br>
@@ -144,8 +43,7 @@
                     "Content-Type": "application/json"
                 }),
                 body: JSON.stringify({
-                    fvar: document.getElementById('stat').value,
-                    svar: 'null'
+                    skill: document.getElementById('skill').value
                 })
             });
 
@@ -161,23 +59,18 @@
                 document.getElementById('rules').innerHTML = json_data.rules;
                 document.getElementById('rules').style.display = 'none';
 
-                var result = [];
-
-                for(var i in json_data.roll)
-                    result.push(json_data.roll[i]);
-
                 var ctx = document.getElementById('chart').getContext('2d');
 
                 window.chartObject = new Chart(ctx, {
 
-                    type: 'pie',
+                    type: 'doughnut',
                     data: {
-                        labels: [],
+                        labels: ['Fails', 'Special success', 'Success on difficult', 'Normal success'],
                         datasets: [
                         {
                             borderColor: 'black',
                             data: [],
-                            backgroundColor: []
+                            backgroundColor: ['rgb(190, 0, 0)', 'rgba(0, 190, 0, 0.7)', 'rgba(0, 160, 0, 0.8)', 'rgb(0, 120, 0)']
                         }]
                     },
                     
@@ -190,49 +83,49 @@
                                 },
                                 gridLines: {
                                     display: false
+                                },
+                                ticks: {
+                                     display: false
                                 }
                             }],
                             xAxes: [{
                                 gridLines: {
                                     display: false
-                                } 
+                                },
+                                ticks: {
+                                     display: false
+                                }               
                             }]
-                        },
-                        legend: {
-                            display: false
                         }
                     }
                 });
 
-                let cd = document.getElementById('stat').value;
                 let over = [];
                 let special = [];
                 let difficult = [];
                 let normal = [];
 
-                for(var i in result)
+                for(var i in json_data.roll)
                 {
-                    if(result[i] > cd)
+                    if(json_data.roll[i] > json_data.difficulty)
                     {
-                        over.push(result[i]);
+                        over.push(json_data.roll[i]);
                     }
-                    else if(result[i] <= cd/5)
+                    else if(json_data.roll[i] <= json_data.difficulty/5)
                     {
-                        special.push(result[i]);
+                        special.push(json_data.roll[i]);
                     }
-                    else if(result[i] <= cd/2)
+                    else if(json_data.roll[i] <= json_data.difficulty/2)
                     {
-                        difficult.push(result[i]);
+                        difficult.push(json_data.roll[i]);
                     }
                     else
                     {
-                        normal.push(result[i]);
+                        normal.push(json_data.roll[i]);
                     }
                 }
 
-                window.chartObject.data.labels.push('Fails', 'Special success', 'Success on difficult', 'Normal success');
                 window.chartObject.data.datasets[0].data.push(over.length, special.length, difficult.length, normal.length);
-                window.chartObject.data.datasets[0].backgroundColor.push('rgb(190, 0, 0)', 'rgba(0, 190, 0, 0.7)', 'rgba(0, 160, 0, 0.8)', 'rgb(0, 120, 0)');
 
                 window.chartObject.update();
             }

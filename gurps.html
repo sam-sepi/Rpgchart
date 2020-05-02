@@ -14,9 +14,8 @@
             <input type="submit" value="Rules" id="show_rules" class="click" onclick="showRules()">
                 <p id="rules" class="text"></p>
             
-            <p id="form" class="text">Difficulty and Effort (1 - 6): </p>
-                <input type="text" id="difficulty" value="5" class="num">
-                <input type="text" id="effort" value="1" class="num">
+            <p id="form" class="text">Skill: </p>
+                <input type="text" id="skill" value="10" class="num">
             
             <input type="submit" value="Roll" id="update" onclick="drawData()" class="click">
         </div>
@@ -39,15 +38,14 @@
             
             document.getElementById('error').innerHTML = '';
 
-            let req = await fetch('api.php?cypher', 
+            let req = await fetch('api.php?gurps', 
             {
                 method: "post",
                 headers: new Headers({
                     "Content-Type": "application/json"
                 }),
                 body: JSON.stringify({
-                    difficulty: document.getElementById('difficulty').value,
-                    effort: document.getElementById('effort').value
+                    skill: document.getElementById('skill').value
                 })
             });
 
@@ -114,7 +112,7 @@
 
                 for(var i in json_data.roll)
                 {
-                    if(json_data.roll[i] >= json_data.difficulty)
+                    if(json_data.roll[i] <= json_data.difficulty)
                     {
                         success.push(json_data.roll[i]);
                     }

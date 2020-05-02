@@ -1,0 +1,5 @@
+GURPS has only three basic “game mechanics”: success rolls, reaction rolls, and damage rolls. A “success roll” is a die roll made when you need to “test” one of your skills or abilities.
+
+Sometimes you roll; sometimes the GM rolls foryou. For instance, you might test, or roll against, your Strength to stop a heavy door from closing. <b>Roll 3 dice and add them together for a successroll. If your roll is less than or equal to the skill or ability you are testing, you succeeded.</b>
+
+Otherwise, you failed. For example, if you are rolling against Strength, and your ST level is 12, a roll of 12 or less succeeds. Thus, the higher the stat you are rolling against, the easier it is to make the roll.

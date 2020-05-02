@@ -10,9 +10,14 @@ use Rpgchart\Storyteller;
 class Api
 {
     protected $rpg;
-    protected $rpgs = ['interlock', 'basicrp', 'opend6', 'storyteller', 'cypher'];
+    protected $rpgs = ['interlock', 'basicrp', 'opend6', 'storyteller', 'cypher', 'gurps'];
     public $error = FALSE;
 
+    /**
+     * instance of RPG obj.
+     *
+     * @param string $qstring
+     */
     public function __construct(string $qstring = null)
     {
         if(in_array(strtolower($qstring), $this->rpgs))
@@ -38,6 +43,10 @@ class Api
                 case 'cypher':
                     $this->rpg = new Cypher;
                 break;
+
+                case 'gurps':
+                    $this->rpg = new Gurps;
+                break;
             }
         }
         else
@@ -46,9 +55,15 @@ class Api
         }
     }
 
-    public function getData(string $first_var = null, string $sec_var = null): array
+    /**
+     * getData
+     *
+     * @param array $input
+     * @return array
+     */
+    public function getData(array $input = null): array
     {
-        $array = $this->rpg->getData($first_var, $sec_var);
+        $array = $this->rpg->getData($input);
 
         return $array;
     }

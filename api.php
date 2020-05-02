@@ -12,9 +12,9 @@ if(strtolower($_SERVER['REQUEST_METHOD']) == 'post')
 
         if($api->error === FALSE)
         {
-            $input = json_decode(file_get_contents('php://input'));
+            $input = json_decode(file_get_contents('php://input'), true);
 
-            $data = $api->getData($input->fvar, $input->svar);
+            $data = $api->getData($input);
 
             if(isset($data['error']))
             {
