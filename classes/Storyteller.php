@@ -93,6 +93,15 @@ class Storyteller extends RpgWrapper
             }
         }
 
+        // 1 pop success
+        for($i = 0; $i < count($dices); $i++)
+        {
+            if($dices[$i] == 1)
+            {
+                array_pop($newarr);
+            }
+        }
+
         return count($newarr);
     }
 
