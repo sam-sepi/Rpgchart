@@ -10,7 +10,7 @@ use Rpgchart\Storyteller;
 class Api
 {
     protected $rpg;
-    protected $rpgs = ['interlock', 'basicrp', 'opend6', 'storyteller', 'cypher', 'gurps'];
+    protected $rpgs = ['interlock', 'basicrp', 'opend6', 'storyteller', 'cypher', 'gurps', 'dand'];
     public $error = FALSE;
 
     /**
@@ -46,6 +46,10 @@ class Api
 
                 case 'gurps':
                     $this->rpg = new Gurps;
+                break;
+
+                case 'dand':
+                    $this->rpg = new Dand;
                 break;
             }
         }
