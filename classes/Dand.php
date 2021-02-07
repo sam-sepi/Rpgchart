@@ -29,10 +29,19 @@ class Dand extends Rpgwrapper
         //stat & skill
         $data['stat'] = (int)$input['stat'];
         $data['skill'] = (int)$input['skill'];
+        $data['cd'] = (int)$input['cd'];
 
         if(($this->validate->validateInterval($data['stat'], 6, 24) == false) or ($this->validate->validateInterval($data['skill'], 1, 24) == false))
         {
-            $data['error'] = 'The Stat field is more than 6 or less than 24 or the Skill field is more than 20 or less than 1';
+            $data['error'] = 'The Stat field is more than 24 or less than 6 or the Skill field is more than 20 or less than 1';
+            $data['http_error'] = '400 Bad Request';
+
+            return $data;
+        }
+
+        if($this->validate->validateInterval($data['cd'], 1, 40) == false)
+        {
+            $data['error'] = 'The CD field is more than 40 or less than 1';
             $data['http_error'] = '400 Bad Request';
 
             return $data;

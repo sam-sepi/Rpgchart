@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/general.css">
+    </head>
+
+    <body>
+        <div id="Character">
+            
+            <p id="rpg"></p>
+            
+            <input type="submit" value="Rules" id="show_rules" class="click" onclick="showRules()">
+                <p id="rules" class="text"></p>
+            
+            <p id="form" class="text">CD, Statistica e Skill: </p>
+                <input type="text" id="cd" value="15" class="num">
+                <input type="text" id="stat" value="16" class="num">
+                <input type="text" id="skill" value="9" class="num">
+            
+            <input type="submit" value="Roll" id="update" onclick="drawData()" class="click">
+        </div>
+        <br>
+        
+        <h3 id="error"></h3>
+
+        <div class="chart-container">
+            <canvas id="chart"></canvas>
+        </div>
+
+        <script>
+
+        drawData();
+
+        async function drawData()
+        {
+            if(window.chartObject!= undefined)
+                window.chartObject.destroy();
+            
+            document.getElementById('error').innerHTML = '';
+
+            let req = await fetch('api.php?dand', 
+            {
+                method: "post",
+                headers: new Headers({
+                    "Content-Type": "application/json"
+                }),
+                body: JSON.stringify({
+                    cd: document.getElementById('cd').value,
+                    stat: document.getElementById('stat').value,
+                    skill: document.getElementById('skill').value
+                })
+            });
+
+            json_data = await req.json();
+
+            if(json_data.error)
+            {
+                document.getElementById('error').innerHTML = json_data.error;
+            }
+            else
+            {
+                document.getElementById('rpg').innerHTML = json_data.rpg;
+                document.getElementById('rules').innerHTML = json_data.rules;
+                document.getElementById('rules').style.display = 'none';
+
+                var result = [];
+
+                for(var i in json_data.roll)
+                    result.push(json_data.roll[i]);
+
+                var ctx = document.getElementById('chart').getContext('2d');
+
+                window.chartObject = new Chart(ctx, {
+
+                    type: 'pie',
+                    data: {
+                        labels: ['Success', 'Failure'],
+                        datasets: [
+                        {
+                            borderColor: 'black',
+                            data: [],
+                            backgroundColor: ['rgb(0, 70, 0)', 'rgba(100, 0, 0, 0.9)']
+                        }]
+                    },
+                    
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    suggestedMin: 0,
+                                    suggestedMax: json_data.yaxes,
+                                },
+                                gridLines: {
+                                    display: false
+                                },
+                                ticks: {
+                                     display: false
+                                }
+                            }],
+                            xAxes: [{
+                                gridLines: {
+                                    display: false
+                                },
+                                ticks: {
+                                     display: false
+                                }
+                            }]
+                        }
+                    }
+                });
+
+                let success = [];
+                let failure = [];
+
+                for(var i in json_data.roll)
+                {
+                    if(json_data.roll[i] >= json_data.cd)
+                    {
+                        success.push(json_data.roll[i]);
+                    }
+                    else
+                    {
+                        failure.push(json_data.roll[i]);
+                    }
+                }
+
+                window.chartObject.data.datasets[0].data.push(success.length, failure.length);
+
+                window.chartObject.update();
+            }
+        }
+
+        function showRules()
+        {
+            if(document.getElementById('rules').style.display === 'none')
+            {
+                document.getElementById('rules').style.display = 'block';
+            }
+            else
+            {
+                document.getElementById('rules').style.display = 'none';
+            }
+        }
+        </script>
+    </body>
+</html>
