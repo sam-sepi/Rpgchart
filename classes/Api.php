@@ -6,11 +6,15 @@ use Rpgchart\Basicrp;
 use Rpgchart\Interlock;
 use Rpgchart\Opend6;
 use Rpgchart\Storyteller;
+use Rpgchart\Cypher;
+use Rpgchart\Dand;
+use Rpgchart\Gurps;
+use Rpgchart\Sifrp;
 
 class Api
 {
     protected $rpg;
-    protected $rpgs = ['interlock', 'basicrp', 'opend6', 'storyteller', 'cypher', 'gurps', 'dand'];
+    protected $rpgs = ['interlock', 'basicrp', 'opend6', 'storyteller', 'cypher', 'gurps', 'dand', 'sifrp'];
     public $error = FALSE;
 
     /**
@@ -51,6 +55,13 @@ class Api
                 case 'dand':
                     $this->rpg = new Dand;
                 break;
+
+                case 'sifrp':
+                    $this->rpg = new Sifrp;
+                break;
+
+                default:
+                    $this->error = TRUE;
             }
         }
         else
